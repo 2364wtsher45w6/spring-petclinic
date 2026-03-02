@@ -59,7 +59,7 @@ jobs:
                 -a Spring-Petclinic \
                 -m org.springframework.samples \
                 -f spring-petclinic \
-                -s Spring-Petclinic \
+                -s base \
                 --rescan \
                 --expunge-scan-sessions
 
