@@ -34,9 +34,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_LOG="${RUNNER_TEMP}/mvn-build.log"
-          echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
-          mvn -B -ntp clean verify |& tee "${BUILD_LOG}"
+          # BUILD_LOG="${RUNNER_TEMP}/mvn-build.log"
+          # echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
+          mvn -B -ntp clean verify # |& tee "${BUILD_LOG}"
 
       - name: Run CodeLogic Scan
         env:
@@ -84,6 +84,6 @@ jobs:
                 --build-number="${{ github.run_number }}" \
                 --pipeline-system="GitHub Actions" \
                 --job-name="Build + CodeLogic Scan" \
-                --build-status="${{ job.status }}" \
-                --log-file="/log_file_path/mvn-build.log" \
-                --log-lines=50000
+                --build-status="${{ job.status }}"
+                # --log-file="/log_file_path/mvn-build.log" \
+                # --log-lines=50000
