@@ -78,7 +78,6 @@ jobs:
             -e AGENT_UUID \
             -e AGENT_PASSWORD \
             -v "${GITHUB_WORKSPACE}:/scan" \
-            -v "${RUNNER_TEMP}:/log_file_path" \
             thingsboard.app.codelogic.com/codelogic_java:latest \
               send_build_info \
                 --build-number="${{ github.run_number }}" \
@@ -87,3 +86,6 @@ jobs:
                 --build-status="${{ job.status }}"
                 # --log-file="/log_file_path/mvn-build.log" \
                 # --log-lines=50000
+                #
+                #
+                # -v "${RUNNER_TEMP}:/log_file_path" \
