@@ -25,7 +25,7 @@ jobs:
 
       # IMPORTANT: no Maven cache => avoid "No space left on device" on caching
       - name: Set up JDK 17 (no cache)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
