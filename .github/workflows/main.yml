@@ -38,7 +38,7 @@ jobs:
           # echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
           mvn -B -ntp clean verify # |& tee "${BUILD_LOG}"
 
-      - name: Run CodeLogic Scan
+           - name: Run CodeLogic Scan
         env:
           CODELOGIC_HOST:   ${{ vars.CODELOGIC_HOST }}
           AGENT_UUID:       ${{ secrets.AGENT_UUID }}
@@ -53,39 +53,11 @@ jobs:
             -e CODELOGIC_HOST \
             -e AGENT_UUID \
             -e AGENT_PASSWORD \
-            -v "${SCAN_MOUNT_PATH}:/github/workspace" \
+            -v "${SCAN_MOUNT_PATH}:/scan" \
             public.ecr.aws/codelogic.com/codelogic_java:latest \
-              analyze -t scan -p /github/workspace \
-                -a Spring-Petclinic \
-                -m org.springframework.samples \
-                -f spring-petclinic \
-                -s base \
-                --rescan \
+              analyze --type scan --path /scan \
+                --application "petclinic" \
+                --method-filter org.springframework.samples \
+                --filter "spring-petclinic" \
+                --scan-space-name "2364wtsher45w6/spring-petclinic" \
                 --expunge-scan-sessions
-
-      - name: Send Build Info (with build log)
-        if: always()
-        env:
-          CODELOGIC_HOST:   ${{ vars.CODELOGIC_HOST }}
-          AGENT_UUID:       ${{ secrets.AGENT_UUID }}
-          AGENT_PASSWORD:   ${{ secrets.AGENT_PASSWORD }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          docker run --pull always --rm \
-            -e CODELOGIC_HOST \
-            -e AGENT_UUID \
-            -e AGENT_PASSWORD \
-            -v "${GITHUB_WORKSPACE}:/scan" \
-            thingsboard.app.codelogic.com/codelogic_java:latest \
-              send_build_info \
-                --build-number="${{ github.run_number }}" \
-                --pipeline-system="GitHub Actions" \
-                --job-name="Build + CodeLogic Scan" \
-                --build-status="${{ job.status }}"
-                # --log-file="/log_file_path/mvn-build.log" \
-                # --log-lines=50000
-                #
-                #
-                # -v "${RUNNER_TEMP}:/log_file_path" \
