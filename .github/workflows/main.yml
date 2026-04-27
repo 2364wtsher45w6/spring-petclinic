@@ -75,12 +75,11 @@ jobs:
             -e AGENT_UUID \
             -e AGENT_PASSWORD \
             -v "${GITHUB_WORKSPACE}:/scan" \
-            -v "${RUNNER_TEMP}:/log_file_path" \
             public.ecr.aws/codelogic.com/codelogic_java:latest \
               send_build_info \
                 --build-number="${{ github.run_number }}" \
                 --pipeline-system="GitHub Actions" \
                 --job-name="Build + CodeLogic Scan" \
                 --build-status="${{ job.status }}" \
-                --log-file="/log_file_path/build.log" \
+                --log-file="/scan/build.log" \
                 --log-lines=50000
