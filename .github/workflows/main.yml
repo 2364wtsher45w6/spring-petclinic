@@ -61,3 +61,26 @@ jobs:
                 --filter "spring-petclinic" \
                 --scan-space-name "2364wtsher45w6/spring-petclinic" \
                 --expunge-scan-sessions
+      - name: Send Build Info
+        if: always()
+        env:
+          CODELOGIC_HOST:   ${{ vars.CODELOGIC_HOST }}
+          AGENT_UUID:       ${{ secrets.AGENT_UUID }}
+          AGENT_PASSWORD:   ${{ secrets.AGENT_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --pull always --rm \
+            -e CODELOGIC_HOST \
+            -e AGENT_UUID \
+            -e AGENT_PASSWORD \
+            -v "${GITHUB_WORKSPACE}:/scan" \
+            -v "${RUNNER_TEMP}:/log_file_path" \
+            public.ecr.aws/codelogic.com/codelogic_java:latest \
+              send_build_info \
+                --build-number="${{ github.run_number }}" \
+                --pipeline-system="GitHub Actions" \
+                --job-name="Build + CodeLogic Scan" \
+                --build-status="${{ job.status }}" \
+                --log-file="/log_file_path/build.log" \
+                --log-lines=50000
