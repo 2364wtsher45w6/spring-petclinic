@@ -34,8 +34,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # BUILD_LOG="${RUNNER_TEMP}/mvn-build.log"
-          # echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
+          BUILD_LOG="$\{GITHUB_WORKSPACE}/build.log"
+          echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
           mvn -B -ntp clean verify # |& tee "${BUILD_LOG}"
 
       - name: Run CodeLogic Scan
