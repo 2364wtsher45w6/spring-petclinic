@@ -59,7 +59,6 @@ jobs:
                 --application "petclinic" \
                 --method-filter org.springframework.samples \
                 --filter "spring-petclinic" \
-                --scan-space-name "2364wtsher45w6/spring-petclinic" \
                 --expunge-scan-sessions
       - name: Send Build Info
         if: always()
