@@ -54,7 +54,7 @@ jobs:
             -v "${SCAN_MOUNT_PATH}:/github/workspace" \
             public.ecr.aws/codelogic.com/codelogic_java:latest \
               analyze -t scan -p /github/workspace \
-                -a Spring-Petclinic \
+                -a petclinic \
                 -m org.springframework.samples \
                 -f spring-petclinic \
                 --rescan \
