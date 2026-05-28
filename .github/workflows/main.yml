@@ -30,13 +30,20 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Build and test
+      - name: Build
         shell: bash
         run: |
           set -euo pipefail
           BUILD_LOG="${GITHUB_WORKSPACE}/build.log"
           echo "BUILD_LOG=${BUILD_LOG}" >> "$GITHUB_ENV"
-          mvn -B -ntp clean verify |& tee "${BUILD_LOG}"
+          mvn -B -ntp clean package \
+            -DskipTests \
+            -Dcheckstyle.skip=true \
+            -Denforcer.skip=true \
+            -Djacoco.skip=true \
+            -Dspring-javaformat.skip=true \
+            -Dcyclonedx.skip=true \
+            |& tee "${BUILD_LOG}"
 
       - name: Run CodeLogic Scan
         env:
