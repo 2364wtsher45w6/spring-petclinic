@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic;
 
+import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -29,9 +30,14 @@ public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 		hints.resources().registerPattern("db/*"); // https://github.com/spring-projects/spring-boot/issues/32654
 		hints.resources().registerPattern("messages/*");
 		hints.resources().registerPattern("mysql-default-conf");
-		hints.serialization().registerType(BaseEntity.class);
-		hints.serialization().registerType(Person.class);
-		hints.serialization().registerType(Vet.class);
+		hints.reflection()
+			.registerType(BaseEntity.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+					MemberCategory.INVOKE_PUBLIC_METHODS);
+		hints.reflection()
+			.registerType(Person.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+					MemberCategory.INVOKE_PUBLIC_METHODS);
+		hints.reflection()
+			.registerType(Vet.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
 	}
 
 }
