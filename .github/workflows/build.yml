@@ -1,0 +1,38 @@
+name: Build
+
+# codelogic-build-feedback
+
+on:
+  push:
+    branches:
+      - main
+      - codelogic/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: ./mvnw clean verify
+
+      - name: Send build info to CodeLogic
+        if: always()
+        uses: CodeLogicIncEngineering/codelogic-send-build-info-github-action@v1
+        with:
+          server-url: ${{ secrets.CODELOGIC_HOST }}
+          agent-uuid: ${{ secrets.AGENT_UUID }}
+          agent-password: ${{ secrets.AGENT_PASSWORD }}
