@@ -25,6 +25,8 @@ import org.springframework.samples.petclinic.vet.Vet;
 public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
+	@SuppressWarnings("deprecation") // serialization() is deprecated but replacement API
+										// not yet available in Spring Boot 4.1.0
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		hints.resources().registerPattern("db/*"); // https://github.com/spring-projects/spring-boot/issues/32654
 		hints.resources().registerPattern("messages/*");
